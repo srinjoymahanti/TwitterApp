@@ -12,6 +12,7 @@ export const getTweetById=(req,res)=>{
 
 export const createTweet=(req,res)=>{
     return res.json({
-        message: 'Create a new tweet'
+        message: 'Tweet created successfully',
+        body: req.body  
     });
 }
