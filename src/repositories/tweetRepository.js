@@ -1,0 +1,31 @@
+import Tweet from "../schema/tweet.js";
+
+export const createTweet = async ({body})=>{
+    try{
+        const tweet = await Tweet.create({body});
+        return tweet;
+    }catch(err){
+        console.log("Error creating tweet", err);
+        throw err;
+    }
+}
+
+export const getAllTweets = async ()=>{
+    try{
+        const tweets = await Tweet.find();// latest first
+        return tweets;
+    }catch(err){
+        console.log("Error fetching tweets", err);
+        throw err;
+    }
+}
+
+export const getTweetById = async (id)=>{
+    try{
+        const tweet = await Tweet.findById(id);
+        return tweet;
+    }catch(err){
+        console.log("Error fetching tweet by id", err);
+        throw err;
+    }
+}
