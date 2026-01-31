@@ -10,7 +10,7 @@ export const createTweet = async ({body})=>{
     }
 }
 
-export const getAllTweets = async ()=>{
+export const getTweets = async ()=>{
     try{
         const tweets = await Tweet.find();// latest first
         return tweets;
@@ -26,6 +26,16 @@ export const getTweetById = async (id)=>{
         return tweet;
     }catch(err){
         console.log("Error fetching tweet by id", err);
+        throw err;
+    }
+}
+
+export const deleteTweetById = async (id)=>{
+    try{
+        const tweet = await Tweet.findByIdAndDelete(id);
+        return tweet;
+    }catch(err){
+        console.log("Error deleting tweet by id", err);
         throw err;
     }
 }
