@@ -39,3 +39,13 @@ export const deleteTweetById = async (id)=>{
         throw err;
     }
 }
+
+export const updateTweetById = async (id,body)=>{
+    try{
+        const tweet = await Tweet.findByIdAndUpdate(id,body,{new:true});
+        return tweet;
+    }catch(err){
+        console.log("Error updating tweet by id", err);
+        throw err;
+    }
+}

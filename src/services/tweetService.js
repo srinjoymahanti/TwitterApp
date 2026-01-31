@@ -2,7 +2,8 @@ import {Filter} from 'bad-words';
 import { createTweet as createTweetRepository,
     getTweets as getTweetsRepository,
     getTweetById as getTweetByIdRepository,
-    deleteTweetById as deleteTweetByIdRepository
+    deleteTweetById as deleteTweetByIdRepository,
+    updateTweetById as updateTweetByIdRepository
 } from '../repositories/tweetRepository.js';
 
 export const createTweet = async ({body}) => {
@@ -36,6 +37,17 @@ export const getTweetById = async (id) => {
 
 export const deleteTweetById = async (id) => {
     const tweet = await deleteTweetByIdRepository(id);
+    if(!response){
+        throw {
+            message: 'Tweet not found',
+            status: 404
+        }
+    }
+    return tweet;
+}
+
+export const updateTweetById = async (id, body) => {
+    const tweet = await updateTweetByIdRepository(id, body);
     if(!response){
         throw {
             message: 'Tweet not found',
