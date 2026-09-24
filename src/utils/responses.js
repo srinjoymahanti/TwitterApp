@@ -1,27 +1,23 @@
-export const errorResponse = (error) => {
-    console.log("Error: ", error);
-    if(error.status){
-        return {
-            status: error.status,
-            body: {
-                success: false,
-                message: error.message
-            }
-        }
+import { StatusCodes } from "http-status-codes";
+
+export const errorResponse = (error, res) => {
+    console.log(error);
+    if(error.status) {
+        return res.status(error.status).json({
+            message: error.message,
+            success: false
+        });
     }
-    return {
-        status: 500,
-        body: {
-            success: false,
-            message: 'Internal server error'
-        }
-    }
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: 'Internal server error',
+        success: false
+    });
 }
 
-export const successResponse = (data,message) => {
-    return res.status(200).json({
+export const successResponse = (data, statusCode, message, res) => {
+    return res.status(statusCode).json({
         success: true,
-        message: message,
-        data: data
+        data,
+        message
     });
 }

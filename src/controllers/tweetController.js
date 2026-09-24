@@ -1,62 +1,61 @@
-import { createTweet as createTweetService,
+import { StatusCodes } from "http-status-codes";
+import { 
+    createTweet as createTweetService,
     getTweets as getTweetsService,
-getTweetById as getTweetByIdService,
-deleteTweetById as deleteTweetByIdService ,
-updateTweetById as updateTweetByIdService
+    getTweetById as getTweetByIdService,
+    deleteTweet as deleteTweetService,
+    updateTweet as updateTweetService
 } from "../services/tweetService.js";
-import {errorResponse,successResponse} from "../utils/responses.js";
+import { errorResponse, successResponse } from "../utils/responses.js";
 
-
-
-export const createTweet=async (req,res)=>{
-    try{
+export const createTweet = async (req, res) => {
+    try {
         const response = await createTweetService({
-            body: req.body.body
+            body: req.body.body,
+            image: req.file?.location
         });
-        return successResponse(response,'Tweet created successfully');
-    }catch(err){
-        return errorResponse(err);
+
+        return successResponse(response, StatusCodes.CREATED, 'Tweet created successfully', res);
+    } catch(error) {
+        return errorResponse(error, res);
     }
 }
 
-export const getTweets=async (req,res)=>{
-    try{
+export const getTweets = async (req, res) => {
+    try {
         const response = await getTweetsService();
-        return successResponse(response,'Tweets fetched successfully');
-    }catch(err){
-        return errorResponse(err);
+        console.log(response);
+        return successResponse(response, StatusCodes.OK, 'Tweets fetched successfully', res);
+    } catch(error) {
+        console.log(error);
+        return errorResponse(error, res);
     }
 }
 
-export const getTweetById=async (req,res)=>{
-    try{
-        const response = await getTweetByIdService(req.params.id);
-        if(!response){
-            return res.status(404).json({
-                success:false,
-                message:'Tweet not found'
-            });
-        }
-        return successResponse(response,'Tweet fetched successfully');
-    }catch(err){
-        return errorResponse(err);
+export const getTweetById = async (req, res) => {
+    try {
+        const response = await getTweetByIdService(req.params.id, res);
+
+        return successResponse(response, StatusCodes.OK, 'Tweet fetched successfully', res);
+    } catch(error) {
+        return errorResponse(error);
     }
 }
 
-export const deleteTweetById=async (req,res)=>{
-    try{
-        const response = await deleteTweetByIdService(req.params.id);
-        return successResponse(response,'Tweet deleted successfully');
-    }catch(err){
-        return errorResponse(err);
+export const deleteTweet = async (req, res) => {
+    try {
+        const response = await deleteTweetService(req.params.id);
+        return successResponse(response, StatusCodes.OK, 'Tweet deleted successfully', res);
+    } catch (error) {
+        return errorResponse(error, res);
     }
 }
 
-export const updateTweetById=async (req,res)=>{
-    try{
-        const response = await updateTweetByIdService(req.params.id,req.body);
-        return successResponse(response,'Tweet updated successfully');
-    }catch(err){
-        return errorResponse(err);
+export const updateTweet = async (req, res) => {
+    try {
+        const response = await updateTweetService(req.params.id, req.body.body);
+        return successResponse(response, StatusCodes.OK, 'Tweet updated successfully', res);
+    } catch(error) {
+        return errorResponse(error, res);
     }
 }
